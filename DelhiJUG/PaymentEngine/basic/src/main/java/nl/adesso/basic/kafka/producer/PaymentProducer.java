@@ -31,8 +31,31 @@ public class PaymentProducer {
         log.info("Going to process transaction, sending message {}", payment);
 
         // 2.4.2 send exception
+        if (payment.getIban().equals("NL61EVIL0332546754")) {
+            // 2.4.2 create filter exception
+            FilterException up = new FilterException("oh no help me");
+
+            Counter.builder("a.message.exception")
+                    .tag("exception", up.getMessage())
+                    .register(Metrics.globalRegistry)
+                    .increment();
+            // throw the exception
+            throw up;
+        }   if (payment.getIban().equals("NL61EVIL0332546754")) {
+            // 2.4.2 create filter exception
+            FilterException up = new FilterException("oh no help me");
+
+            Counter.builder("a.message.exception")
+                    .tag("exception", up.getMessage())
+                    .register(Metrics.globalRegistry)
+                    .increment();
+            // throw the exception
+            throw up;
+        }
+
 
         // 2.4 Send to topic "payments" and send payment
+        kafkaTemplate.send("payments", key, payment);
     }
 
     private Account getAccountFromCookie() {
