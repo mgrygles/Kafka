@@ -23,6 +23,10 @@
 ### Get a copy of this repository
 Clone or download this repo.
 
+### Note
+
+If you got a missing class and an error for the import of `example.avro.Payment` - then you need to click in IntelliJ IDEA on the project module and select `maven` \ `Generate sources and update folders`. 
+
 ### Exercises Basic Kafka
 1. Start zookeeper / kafka / kafka-ui with docker with ./start.sh
 2. In the src code, follow all the comments and begin from the config to controller, to the producer and consumer
