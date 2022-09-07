@@ -19,7 +19,7 @@ open class TopicConfiguration {
 
     @Bean
     open fun output(): NewTopic {
-        return TopicBuilder.name("output-topic")
+        return TopicBuilder.name("count")
             .partitions(1)
             .replicas(1)
             .compact()

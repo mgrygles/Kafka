@@ -2,30 +2,28 @@ package nl.blue4it.streaming
 
 import example.avro.CustomerId
 import example.avro.Message
+import io.confluent.kafka.serializers.AbstractKafkaAvroSerDeConfig
 import io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
 import nl.blue4it.streaming.processor.TransactionCountProcessor
+import org.apache.kafka.clients.producer.ProducerConfig
 import org.apache.kafka.common.serialization.IntegerSerializer
 import org.apache.kafka.common.serialization.Serdes
-import org.apache.kafka.common.serialization.StringSerializer
 import org.apache.kafka.streams.StreamsBuilder
 import org.apache.kafka.streams.Topology
 import org.apache.kafka.streams.state.Stores
-import org.springframework.boot.SpringApplication
-import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.context.annotation.Bean
-import org.springframework.kafka.annotation.EnableKafkaStreams
+import org.springframework.stereotype.Component
 import java.util.*
 
-@SpringBootApplication
-@EnableKafkaStreams
-open class PaymentEngineTopology {
+@Component
+class ProcessorTopology(private var url: String = "http://localhost:8085",) {
 
     @Bean
-    open fun buildTopology(streamsBuilder: StreamsBuilder): Topology {
+    fun buildTopology(streamsBuilder: StreamsBuilder): Topology {
         println("building topology")
 
         return streamsBuilder.build()
-            .addSource("Source","input-topic")
+            .addSource("Source", getCustomerIdSerde().deserializer(), getMessageSerde().deserializer(), "input-topic")
             .addProcessor<CustomerId, Message, CustomerId, Int>("Process", { TransactionCountProcessor() }, "Source")
             .addStateStore(
                 Stores.keyValueStoreBuilder(
@@ -34,7 +32,7 @@ open class PaymentEngineTopology {
                     Serdes.Integer()
                 ),"Process"
             )
-            .addSink("Sink", "output-topic", getCustomerIdSerde().serializer(), IntegerSerializer(), "Process")
+            .addSink("Sink", "count", getCustomerIdSerde().serializer(), IntegerSerializer(), "Process")
     }
 
     private fun getCustomerIdSerde(): SpecificAvroSerde<CustomerId> {
@@ -43,16 +41,18 @@ open class PaymentEngineTopology {
         return customerIdSerde
     }
 
-    private fun getSchemaRegistryUrl(): MutableMap<String, String> = Collections.singletonMap(
-        "schema.registry.url",
-        "http://localhost:8085"
-    )
-
-
-    companion object {
-        @JvmStatic
-        fun main(args: Array<String>) {
-            SpringApplication.run(PaymentEngineTopology::class.java, *args)
-        }
+    private fun getMessageSerde(): SpecificAvroSerde<Message> {
+        val messageSpecificAvroSerde: SpecificAvroSerde<Message> = SpecificAvroSerde<Message>()
+        messageSpecificAvroSerde.configure(getSchemaRegistryUrl(),false)
+        return messageSpecificAvroSerde
     }
+
+    private fun getSchemaRegistryUrl(): Map<String, *> = mapOf(
+        Pair("schema.registry.url", url),
+        Pair("bootstrap.servers", "http://localhost:9092"),
+        Pair("specific.avro.reader", "true"),
+        Pair("auto.register.schemas", "true"),
+        Pair("default.key.serde", SpecificAvroSerde::class.java),
+        Pair("default.value.serde", SpecificAvroSerde::class.java),
+    )
 }

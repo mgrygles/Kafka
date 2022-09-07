@@ -10,7 +10,7 @@ import org.apache.kafka.streams.state.KeyValueStore
 import java.time.Duration
 
 /*
- The processor will count all transactions of a customer.
+ The processor will count all input-topic of a customer.
  The code will only be executed when there is a message in the input-topic.
  Please goto http://localhost:8080/ui/clusters/local/topics/input-topic,
  next goto tab messages and click on button "Produce Message",
