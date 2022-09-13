@@ -5,7 +5,6 @@ import org.springframework.boot.runApplication
 import org.springframework.kafka.annotation.EnableKafkaStreams
 
 @SpringBootApplication(scanBasePackages = ["nl.blue4it"])
-@EnableKafkaStreams
 open class ProcessorApplication
 
 fun main(args: Array<String>) {

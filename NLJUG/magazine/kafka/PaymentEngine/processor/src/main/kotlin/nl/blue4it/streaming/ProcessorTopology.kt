@@ -12,11 +12,13 @@ import org.apache.kafka.streams.StreamsBuilder
 import org.apache.kafka.streams.Topology
 import org.apache.kafka.streams.state.Stores
 import org.springframework.context.annotation.Bean
+import org.springframework.kafka.annotation.EnableKafkaStreams
 import org.springframework.stereotype.Component
 import java.util.*
 
 @Component
-class ProcessorTopology(private var url: String = "http://localhost:8085",) {
+@EnableKafkaStreams
+class ProcessorTopology(private var url: String = "http://localhost:8081",) {
 
     @Bean
     fun buildTopology(streamsBuilder: StreamsBuilder): Topology {
