@@ -1,0 +1,56 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Launch Current File",
+            "request": "launch",
+            "mainClass": "${file}"
+        },
+        {
+            "type": "java",
+            "name": "Launch OwnYourSoftwareApplication",
+            "request": "launch",
+            "mainClass": "nl.blue4it.paymentengine.OwnYourSoftwareApplication",
+            "projectName": "CarRace"
+        },
+        {
+            "type": "java",
+            "name": "Launch PaymentEngineTopology",
+            "request": "launch",
+            "mainClass": "nl.blue4it.paymentengine.kafka.streams.PaymentEngineTopology",
+            "projectName": "CarRace"
+        },
+        {
+            "type": "java",
+            "name": "Launch PaymentEngineApplication",
+            "request": "launch",
+            "mainClass": "nl.adesso.basic.PaymentEngineApplication",
+            "projectName": "basic"
+        },
+        {
+            "type": "java",
+            "name": "Launch PaymentEngineApplication(1)",
+            "request": "launch",
+            "mainClass": "nl.blue4it.paymentengine.PaymentEngineApplication",
+            "projectName": "payment-engine"
+        },
+        {
+            "type": "java",
+            "name": "Launch PaymentEngineTopology(1)",
+            "request": "launch",
+            "mainClass": "nl.blue4it.paymentengine.kafka.streams.PaymentEngineTopology",
+            "projectName": "payment-engine"
+        },
+        {
+            "type": "java",
+            "name": "Launch PaymentEngineTopology(2)",
+            "request": "launch",
+            "mainClass": "nl.adesso.streaming.PaymentEngineTopology",
+            "projectName": "streaming"
+        }
+    ]
+}
